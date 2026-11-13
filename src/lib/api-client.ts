@@ -10,13 +10,14 @@ export type ClientErrorCode = ApiErrorCode | "NETWORK_ERROR" | "INVALID_RESPONSE
 
 /** Every failure from the API client is normalized to this error. */
 export class ApiError extends Error {
-  constructor(
-    readonly status: number,
-    readonly code: ClientErrorCode,
-    message: string,
-  ) {
+  readonly status: number;
+  readonly code: ClientErrorCode;
+
+  constructor(status: number, code: ClientErrorCode, message: string) {
     super(message);
     this.name = "ApiError";
+    this.status = status;
+    this.code = code;
   }
 }
 

@@ -1,5 +1,3 @@
-import { ApiError } from "@/lib/api-client";
-
 export type SaveMovieResult = { ok: true; saved: string } | { ok: false; error: string };
 
 /**
@@ -22,7 +20,11 @@ export async function saveMovieOptimistically(options: {
     apply(previous);
     return {
       ok: false,
-      error: error instanceof ApiError ? error.message : "We couldn't save your movie. Please try again.",
+      // ApiError messages are already user-facing; anything else gets a generic message.
+      error:
+        error instanceof Error && error.name === "ApiError"
+          ? error.message
+          : "We couldn't save your movie. Please try again.",
     };
   }
 }
