@@ -1,13 +1,16 @@
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { signOut } from "@/auth";
-import { getSessionUser } from "@/lib/session";
+import { getCurrentUser } from "@/lib/session";
 
 // Temporary placeholder for verifying authentication; replaced in Stage 5.
 export default async function DashboardPage() {
-  const user = await getSessionUser();
+  const user = await getCurrentUser();
   if (!user) {
     redirect("/");
+  }
+  if (!user.favoriteMovie) {
+    redirect("/onboarding");
   }
 
   const displayName = user.name ?? user.email ?? "there";
@@ -42,6 +45,10 @@ export default async function DashboardPage() {
           <p className="text-zinc-600 dark:text-zinc-400">{user.email}</p>
         )}
       </div>
+
+      <p>
+        Favorite movie: <span className="font-medium">{user.favoriteMovie}</span>
+      </p>
 
       <form action={signOutAction}>
         <button

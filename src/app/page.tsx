@@ -1,10 +1,11 @@
 import { redirect } from "next/navigation";
 import { signIn } from "@/auth";
-import { getSessionUser } from "@/lib/session";
+import { getCurrentUser } from "@/lib/session";
 
 export default async function Home({ searchParams }: PageProps<"/">) {
-  if (await getSessionUser()) {
-    redirect("/dashboard");
+  const user = await getCurrentUser();
+  if (user) {
+    redirect(user.favoriteMovie ? "/dashboard" : "/onboarding");
   }
 
   const { error } = await searchParams;
