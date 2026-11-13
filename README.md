@@ -169,9 +169,10 @@ npm run build
 
 ## AI-assisted development
 
-This project was built with help from **Claude (Anthropic) in Claude Code**.
 
-- **Claude:** proposed designs at each stage, wrote most of the code and tests, and ran verification (lint, type checks, builds, the mock-based OpenAI tests, curl and headless-browser checks).
-- **The author:** made every architecture and security decision, reviewed and approved each stage before it was committed, set up the Google OAuth and OpenAI credentials, and performed the real Google sign-in and the single live OpenAI test.
+I used Claude (Anthropic), through Claude Code, as a coding assistant throughout this project.
 
-Commits made with AI help include a `Co-Authored-By: Claude` trailer.
+- **Design and decisions (me):** I chose the architecture and made the security calls, including database sessions over JWTs, session-scoped authorization on every route, the write-once onboarding update, the 30-second client cache, and optimistic editing with rollback. Claude proposed options at each stage, and I picked among them or changed them.
+- **Implementation (Claude, reviewed by me):** Claude wrote most of the code and tests from those decisions. I reviewed every change and approved each stage before committing it.
+- **Verification (shared):** Claude ran lint, type checks, builds, mock-based OpenAI tests, and curl and headless-browser checks. I set up the Google OAuth and OpenAI credentials and ran the real Google sign-in and the live OpenAI test myself.
+- **Ownership:** I can walk through and defend every part of the code, including the tradeoffs and known limitations listed above.
