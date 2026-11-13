@@ -1,9 +1,11 @@
-import Image from "next/image";
 import { redirect } from "next/navigation";
-import { signOut } from "@/auth";
 import { getCurrentUser } from "@/lib/session";
+import { getAvatarUrl, getFirstName, getInitial } from "@/lib/display";
+import { FactCard } from "./fact-card";
+import { MovieCard } from "./movie-card";
+import { SignOutButton } from "./sign-out-button";
+import { UserAvatar } from "./user-avatar";
 
-// Temporary placeholder for verifying authentication; replaced in Stage 5.
 export default async function DashboardPage() {
   const user = await getCurrentUser();
   if (!user) {
@@ -13,51 +15,41 @@ export default async function DashboardPage() {
     redirect("/onboarding");
   }
 
-  const displayName = user.name ?? user.email ?? "there";
-
-  async function signOutAction() {
-    "use server";
-    await signOut({ redirectTo: "/" });
-  }
+  const firstName = getFirstName(user.name);
 
   return (
-    <main className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
-      {user.image ? (
-        <Image
-          src={user.image}
-          alt=""
-          width={64}
-          height={64}
-          className="rounded-full"
-        />
-      ) : (
-        <div
-          aria-hidden
-          className="flex h-16 w-16 items-center justify-center rounded-full bg-zinc-200 text-xl font-semibold dark:bg-zinc-800"
-        >
-          {displayName.charAt(0).toUpperCase()}
+    <>
+      <header className="border-b border-zinc-900">
+        <div className="mx-auto flex w-full max-w-3xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+          <p className="flex items-center gap-2 font-semibold tracking-tight">
+            <span aria-hidden className="h-2 w-2 rounded-full bg-amber-400" />
+            Movie Memory
+          </p>
+          <SignOutButton />
         </div>
-      )}
+      </header>
 
-      <div className="space-y-1">
-        <h1 className="text-2xl font-semibold">Signed in as {displayName}</h1>
-        {user.email && (
-          <p className="text-zinc-600 dark:text-zinc-400">{user.email}</p>
-        )}
-      </div>
+      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-10 sm:px-6 sm:py-14">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-5">
+          <UserAvatar
+            src={getAvatarUrl(user.image)}
+            initial={getInitial(user)}
+          />
+          <div className="min-w-0">
+            <h1 className="text-2xl font-semibold tracking-tight [overflow-wrap:anywhere] sm:text-3xl">
+              {firstName ? `Welcome back, ${firstName}` : "Welcome back"}
+            </h1>
+            <p className="mt-1 text-zinc-400 [overflow-wrap:anywhere]">
+              {user.email ?? "No email on file"}
+            </p>
+          </div>
+        </div>
 
-      <p>
-        Favorite movie: <span className="font-medium">{user.favoriteMovie}</span>
-      </p>
-
-      <form action={signOutAction}>
-        <button
-          type="submit"
-          className="rounded-full border border-zinc-300 px-5 py-2.5 text-sm font-medium transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-900"
-        >
-          Sign out
-        </button>
-      </form>
-    </main>
+        <div className="mt-10 flex flex-col gap-6">
+          <MovieCard title={user.favoriteMovie} />
+          <FactCard movieTitle={user.favoriteMovie} />
+        </div>
+      </main>
+    </>
   );
 }

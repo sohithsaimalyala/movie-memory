@@ -26,19 +26,19 @@ export function OnboardingForm() {
         placeholder="e.g. Spirited Away"
         aria-invalid={state.error ? true : undefined}
         aria-describedby={state.error ? "title-error" : undefined}
-        className="rounded-lg border border-zinc-300 bg-transparent px-3 py-2 outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-300 aria-invalid:border-red-500 dark:border-zinc-700 dark:focus:ring-zinc-700"
+        className="h-11 rounded-lg border border-zinc-700 bg-zinc-900/60 px-3 text-zinc-50 placeholder:text-zinc-500 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/40 aria-invalid:border-red-400"
       />
       <p
         id="title-error"
         aria-live="polite"
-        className="min-h-5 text-sm text-red-600 dark:text-red-400"
+        className="min-h-5 text-sm text-red-400"
       >
         {state.error}
       </p>
       <button
         type="submit"
         disabled={pending}
-        className="rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:opacity-60"
+        className="h-11 rounded-full bg-foreground px-5 text-sm font-medium text-background transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-60 motion-reduce:transition-none"
       >
         {pending ? "Saving…" : "Continue"}
       </button>
