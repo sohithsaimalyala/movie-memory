@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/session";
 import { getAvatarUrl, getFirstName, getInitial } from "@/lib/display";
+import { getLatestFact } from "@/lib/facts";
 import { FactCard } from "./fact-card";
 import { MovieCard } from "./movie-card";
 import { SignOutButton } from "./sign-out-button";
@@ -16,6 +17,7 @@ export default async function DashboardPage() {
   }
 
   const firstName = getFirstName(user.name);
+  const latestFact = await getLatestFact(user.id, user.favoriteMovie);
 
   return (
     <>
@@ -47,7 +49,7 @@ export default async function DashboardPage() {
 
         <div className="mt-10 flex flex-col gap-6">
           <MovieCard title={user.favoriteMovie} />
-          <FactCard movieTitle={user.favoriteMovie} />
+          <FactCard movieTitle={user.favoriteMovie} initialFact={latestFact} />
         </div>
       </main>
     </>
