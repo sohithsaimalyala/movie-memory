@@ -2,8 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/session";
 import { getAvatarUrl, getFirstName, getInitial } from "@/lib/display";
 import { getLatestFact } from "@/lib/facts";
-import { FactCard } from "./fact-card";
-import { MovieCard } from "./movie-card";
+import { FavoriteMovieSection } from "./favorite-movie-section";
 import { SignOutButton } from "./sign-out-button";
 import { UserAvatar } from "./user-avatar";
 
@@ -48,8 +47,11 @@ export default async function DashboardPage() {
         </div>
 
         <div className="mt-10 flex flex-col gap-6">
-          <MovieCard title={user.favoriteMovie} />
-          <FactCard movieTitle={user.favoriteMovie} initialFact={latestFact} />
+          <FavoriteMovieSection
+            userId={user.id}
+            initialMovie={user.favoriteMovie}
+            initialFact={latestFact}
+          />
         </div>
       </main>
     </>

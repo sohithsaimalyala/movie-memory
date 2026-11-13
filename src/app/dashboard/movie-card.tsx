@@ -2,11 +2,13 @@ import type { ReactNode } from "react";
 
 type MovieCardProps = {
   title: string;
-  /** Header controls (Stage 8 adds the Edit button here). */
+  /** Header controls, such as the Edit button. */
   actions?: ReactNode;
+  /** Replaces the title display, such as the inline edit form. */
+  body?: ReactNode;
 };
 
-export function MovieCard({ title, actions }: MovieCardProps) {
+export function MovieCard({ title, actions, body }: MovieCardProps) {
   return (
     <section
       aria-labelledby="favorite-movie-heading"
@@ -21,9 +23,11 @@ export function MovieCard({ title, actions }: MovieCardProps) {
         </h2>
         {actions}
       </div>
-      <p className="mt-3 text-3xl font-semibold tracking-tight text-zinc-50 [overflow-wrap:anywhere] sm:text-5xl sm:leading-tight">
-        {title}
-      </p>
+      {body ?? (
+        <p className="mt-3 text-3xl font-semibold tracking-tight text-zinc-50 [overflow-wrap:anywhere] sm:text-5xl sm:leading-tight">
+          {title}
+        </p>
+      )}
     </section>
   );
 }

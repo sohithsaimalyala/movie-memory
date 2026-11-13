@@ -1,12 +1,15 @@
-import type { MovieFactView } from "@/lib/facts";
+import type { Fact } from "@/lib/api-types";
 import { FactPanel } from "./fact-panel";
 
 type FactCardProps = {
+  userId: string;
   movieTitle: string;
-  initialFact: MovieFactView | null;
+  initialFact: Fact | null;
+  /** True while a movie change is being saved; facts are not loaded meanwhile. */
+  paused: boolean;
 };
 
-export function FactCard({ movieTitle, initialFact }: FactCardProps) {
+export function FactCard({ userId, movieTitle, initialFact, paused }: FactCardProps) {
   return (
     <section
       aria-labelledby="fact-heading"
@@ -23,7 +26,7 @@ export function FactCard({ movieTitle, initialFact }: FactCardProps) {
           AI
         </span>
       </div>
-      <FactPanel movieTitle={movieTitle} initialFact={initialFact} />
+      <FactPanel userId={userId} movieTitle={movieTitle} initialFact={initialFact} paused={paused} />
     </section>
   );
 }
